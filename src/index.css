@@ -1,0 +1,22 @@
+:root { --bg: #0f172a; --text: #f8fafc; --accent: #38bdf8; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body, #root { height: 100%; }
+body { background: #000; color: var(--text); font-family: system-ui, sans-serif; }
+
+.stage { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
+.frame {
+  position: absolute; left: 50%; top: 50%;
+  width: 1920px; height: 1080px; margin: -540px 0 0 -960px;
+  background: var(--bg); transform-origin: center;
+}
+
+.slide {
+  height: 100%; padding: 120px;
+  display: flex; flex-direction: column; justify-content: center; gap: 40px;
+}
+.slide h1 { font-size: 96px; }
+.slide p, .slide li { font-size: 44px; }
+
+.progress { position: absolute; left: 0; bottom: 0; height: 8px; background: var(--accent); transition: width .3s; }
+.counter { position: absolute; right: 40px; bottom: 24px; font-size: 28px; opacity: .6; }
