@@ -1,3 +1,4 @@
+import { useRevealBlocks } from '../hooks/useSteps'
 import { useState } from 'react'
 import { SlideHeading } from './shared'
 
@@ -7,6 +8,7 @@ const products = [
   { name: 'Laptop Stand', qty: 1, price: 42 },
 ]
 export default function InvoiceLetterFax() {
+  useRevealBlocks(['.invoice-paper', '.invoice-explainer'])
   const [vat, setVat] = useState(21)
   const subtotal = products.reduce((sum, product) => sum + product.qty * product.price, 0)
   return (

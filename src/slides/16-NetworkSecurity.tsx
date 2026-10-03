@@ -1,7 +1,9 @@
+import { useRevealBlocks } from '../hooks/useSteps'
 import { useState } from 'react'
 import { DemoLabel, SlideHeading } from './shared'
 
 export default function NetworkSecurity() {
+  useRevealBlocks(['.team-card', '.salary-card'])
   const [password, setPassword] = useState('')
   const [unlocked, setUnlocked] = useState(false)
   const [message, setMessage] = useState('')

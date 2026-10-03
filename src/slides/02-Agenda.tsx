@@ -1,5 +1,6 @@
 import { SlideHeading, type SlideProps } from './shared'
 import EpisodeTitle from '../components/EpisodeTitle'
+import { useSteps } from '../hooks/useSteps'
 
 const sections = [
     { label: 'Word Processing', range: '03—09', icon: 'W', color: 'violet', index: 2 },
@@ -9,6 +10,7 @@ const sections = [
 ]
 
 export default function Agenda({ onNavigate }: SlideProps) {
+    const step = useSteps(sections.length + 1, 1)
     return (
         <div className="content-slide">
             <EpisodeTitle ep={2} />
@@ -17,11 +19,12 @@ export default function Agenda({ onNavigate }: SlideProps) {
                 title="Choose your path"
                 subtitle="Four stops, one goal: choose the right tool for the task."
             />
+            <div className="step-hint">{step <= sections.length ? `Click to reveal · ${step}/${sections.length + 1}` : 'Click to continue →'}</div>
             <div className="agenda-grid">
-                {sections.map((section) => (
+                {sections.map((section, i) => (
                     <button
                         key={section.label}
-                        className={`agenda-card ${section.color}`}
+                        className={`agenda-card jelly reveal${step > i ? ' on' : ''} ${section.color}`}
                         onClick={() => onNavigate?.(section.index)}
                     >
                         <span className="agenda-icon">{section.icon}</span>
@@ -33,7 +36,7 @@ export default function Agenda({ onNavigate }: SlideProps) {
                     </button>
                 ))}
             </div>
-            <div className="agenda-note">
+            <div className={`agenda-note reveal${step > sections.length ? ' on' : ''}`}>
                 <span className="note-icon">✦</span>
                 <span><strong>Language work</strong> · giving instructions, plurals &amp; pronunciation</span>
                 <span className="note-range">17—18</span>

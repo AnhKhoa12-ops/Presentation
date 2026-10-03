@@ -1,7 +1,9 @@
+import { useRevealBlocks } from '../hooks/useSteps'
 import { useState } from 'react'
 import { DemoLabel, SlideHeading } from './shared'
 
 export default function Typography() {
+  useRevealBlocks(['.type-controls', '.type-paper'])
   const [bold, setBold] = useState(false)
   const [italic, setItalic] = useState(false)
   const [underline, setUnderline] = useState(false)

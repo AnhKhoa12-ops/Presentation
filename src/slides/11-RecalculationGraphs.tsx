@@ -1,7 +1,9 @@
+import { useRevealBlocks } from '../hooks/useSteps'
 import { useState } from 'react'
 import { DemoLabel, SlideHeading } from './shared'
 
 export default function RecalculationGraphs() {
+  useRevealBlocks(['.revenue-table', '.chart-panel'])
   const [sales, setSales] = useState([120, 180, 145, 220])
   const labels = ['North', 'South', 'East', 'West']
   const total = sales.reduce((sum, value) => sum + value, 0)

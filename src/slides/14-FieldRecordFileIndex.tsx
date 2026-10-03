@@ -1,3 +1,4 @@
+import { useRevealBlocks } from '../hooks/useSteps'
 import { useState } from 'react'
 import { DemoLabel, SlideHeading } from './shared'
 
@@ -8,6 +9,7 @@ const rows = [
   ['E107', 'Leo Walsh', 'Support', 'Dublin'],
 ]
 export default function FieldRecordFileIndex() {
+  useRevealBlocks(['.employee-table-wrap', '.structure-labels'])
   const [hovered, setHovered] = useState('')
   return (
     <div className="content-slide">

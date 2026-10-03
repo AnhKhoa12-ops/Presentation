@@ -1,7 +1,9 @@
+import { useRevealBlocks } from '../hooks/useSteps'
 import { useState } from 'react'
 import { DemoLabel, SlideHeading } from './shared'
 
 export default function UndoFindReplace() {
+  useRevealBlocks(['.find-document', '.find-window', '.find-shortcuts'])
   const [replaced, setReplaced] = useState(false)
   const [undone, setUndone] = useState(false)
   return (

@@ -1,9 +1,15 @@
+import { useState } from 'react'
 import { Icon } from './shared'
 import EpisodeTitle from '../components/EpisodeTitle'
 import Mascot from '../components/Mascot.tsx'
-import SageNote from '../components/SageNote'
+const lines = [
+    "Yoroshiku! Let's start the episode!",
+    'I am Rimuru — today we study office software!',
+    'Great Sage says: click me again~',
+]
 
 export default function Cover() {
+    const [line, setLine] = useState(0)
     return (
         <div className="cover-slide">
             <span className="cover-kana" aria-hidden="true">ロード・ウィブ</span>
@@ -31,13 +37,11 @@ export default function Cover() {
                 <div className="floating-card card-excel"><Icon name="excel" /><span>Spreadsheets</span></div>
                 <div className="floating-card card-db"><Icon name="database" /><span>Databases</span></div>
                 <div className="orbit orbit-a" /><div className="orbit orbit-b" />
-                <div className="cover-mascot">
-                    <div className="bubble">Yoroshiku! Let's start the episode!</div>
+                <div className="cover-mascot jelly" role="button" tabIndex={0} data-no-nav onClick={() => setLine((line + 1) % lines.length)}>
+                    <div className="bubble">{lines[line]}</div>
                     <Mascot mood="happy" size={300} />
                 </div>
             </div>
         </div>
     )
 }
-
-<SageNote>Answer: Cut removes text and stores it on the Clipboard.</SageNote>

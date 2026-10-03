@@ -1,3 +1,4 @@
+import { useRevealBlocks } from '../hooks/useSteps'
 import { Panel, SlideHeading } from './shared'
 
 const cards = [
@@ -7,6 +8,7 @@ const cards = [
 ]
 
 export default function WordProcessing() {
+  useRevealBlocks(['.definition-card', '.type-card:nth-child(1)', '.type-card:nth-child(2)', '.type-card:nth-child(3)', '.bottom-callout'])
   return (
     <div className="content-slide">
       <SlideHeading eyebrow="01 / WORD PROCESSING" title="What is word processing?" subtitle="Using software to create, edit, format, save and print text documents." />

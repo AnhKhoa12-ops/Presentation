@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { SlideHeading } from './shared'
+import { arrival, useStepControl } from '../hooks/useSteps'
 
 const lines = [
   { word: 'First,', text: 'open the spreadsheet and select the sales sheet.' },
@@ -8,7 +9,8 @@ const lines = [
   { word: 'Finally,', text: 'save the file and send it to your tutor.' },
 ]
 export default function Instructions() {
-  const [visible, setVisible] = useState(1)
+  const [visible, setVisible] = useState(arrival.fromPrev ? lines.length : 1)
+  useStepControl(visible, setVisible, lines.length, 1)
   return (
     <div className="content-slide">
       <SlideHeading eyebrow="LANGUAGE WORK" title="Give clear instructions" subtitle="Sequence words guide someone through a process, one step at a time." />

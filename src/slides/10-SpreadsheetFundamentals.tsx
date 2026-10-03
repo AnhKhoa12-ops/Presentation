@@ -1,8 +1,10 @@
+import { useRevealBlocks } from '../hooks/useSteps'
 import { useState } from 'react'
 import { DemoLabel, SlideHeading } from './shared'
 
 const columns = ['A', 'B', 'C', 'D', 'E', 'F']
 export default function SpreadsheetFundamentals() {
+  useRevealBlocks(['.fundamentals-window', '.cell-guide'])
   const [hover, setHover] = useState('B5')
   const col = hover.replace(/[0-9]/g, '')
   const row = hover.replace(/[A-Z]/g, '')

@@ -1,0 +1,97 @@
+/* ===== Tương tác: hạt khi bấm, chuyển slide, hover, hiện từng bước ===== */
+.click-burst { position: fixed; inset: 0; pointer-events: none; z-index: 9999; }
+.burst { position: absolute; width: 0; height: 0; }
+.burst i {
+  position: absolute; left: -5px; top: -5px; width: 10px; height: 10px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff, #6fd0ff 60%, #2f8fe8);
+  animation: burst-fly .6s ease-out forwards;
+}
+@keyframes burst-fly {
+  from { transform: translate(0, 0) scale(1); opacity: 1; }
+  to { transform: translate(var(--dx), var(--dy)) scale(.2); opacity: 0; }
+}
+
+/* Chuyển slide theo hướng */
+.slide-viewport[data-dir="next"] > .content-slide,
+.slide-viewport[data-dir="next"] > .cover-slide { animation: slide-next .5s cubic-bezier(.2, .9, .3, 1.15); }
+.slide-viewport[data-dir="prev"] > .content-slide,
+.slide-viewport[data-dir="prev"] > .cover-slide { animation: slide-prev .5s cubic-bezier(.2, .9, .3, 1.15); }
+@keyframes slide-next { from { opacity: 0; transform: translateX(60px) scale(.98); } to { opacity: 1; transform: none; } }
+@keyframes slide-prev { from { opacity: 0; transform: translateX(-60px) scale(.98); } to { opacity: 1; transform: none; } }
+
+/* Hover / nhấn kiểu thạch */
+.jelly { transition: transform .2s cubic-bezier(.3, 1.6, .5, 1), box-shadow .2s; cursor: pointer; }
+.jelly:hover { transform: translateY(-3px) scale(1.04, .97); box-shadow: 0 10px 24px rgba(47, 143, 232, .35); }
+.jelly:active { transform: scale(.94, 1.05); }
+button:not(:disabled):active { transform: scale(.95); }
+@keyframes jelly-pop { 0% { transform: scale(1); } 40% { transform: scale(1.12, .9); } 70% { transform: scale(.96, 1.06); } 100% { transform: scale(1); } }
+@keyframes shake-x { 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
+@keyframes pop-in { from { transform: scale(.6); opacity: 0; } to { transform: none; opacity: 1; } }
+
+/* Hiện nội dung từng bước */
+.reveal { opacity: 0; transform: translateY(26px) scale(.94); pointer-events: none; transition: opacity .4s, transform .5s cubic-bezier(.3, 1.5, .5, 1); }
+.reveal.on { opacity: 1; transform: none; pointer-events: auto; }
+.jelly.reveal.on:hover { transform: translateY(-3px) scale(1.04, .97); }
+.step-hint {
+  position: absolute; right: 18px; bottom: 14px; z-index: 5; padding: 6px 14px; border-radius: 999px;
+  background: rgba(11, 42, 74, .85); color: #dff6ff; font-size: 13px; font-weight: 700; letter-spacing: .04em;
+  animation: jelly-pop 1.8s infinite;
+}
+
+/* Bìa: bấm mascot đổi lời thoại */
+.cover-mascot[role="button"] { cursor: pointer; }
+
+/* Slide 07: Predator kéo-thả */
+.predator { display: grid; grid-template-columns: 1fr 250px 1fr; gap: 20px; align-items: stretch; margin-top: 12px; }
+.pd-col { display: flex; flex-direction: column; gap: 10px; }
+.pd-mid { justify-content: center; }
+.pd-page {
+  flex: 1; min-height: 190px; padding: 16px; border-radius: 18px; background: rgba(255, 255, 255, .92); color: #0b2a4a;
+  border: 3px solid #0b2a4a; box-shadow: 0 6px 0 rgba(11, 42, 74, .25); display: flex; flex-direction: column; gap: 10px; transition: .2s;
+}
+.pd-dest.over, .pd-zone.over { transform: scale(1.04); border-color: #2f8fe8; background: #e6f6ff; }
+.pd-chip { padding: 10px 14px; border-radius: 12px; background: #dff3ff; border: 2px dashed #2f8fe8; cursor: grab; font-weight: 700; user-select: none; }
+.pd-chip:active { cursor: grabbing; }
+.pd-chip.held { outline: 3px solid #ffb703; animation: jelly-pop .5s; }
+.pd-gap { opacity: .5; font-style: italic; }
+.pd-zone { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 16px; background: rgba(255, 255, 255, .92); color: #0b2a4a; border: 3px dashed #0b2a4a; }
+.pd-zone.cut { border-color: #e85d75; }
+.pd-zone.copy { border-color: #2fbf71; }
+.pd-zone span { font-size: 26px; }
+.pd-zone small { display: block; opacity: .7; }
+.pd-clip { padding: 12px; border-radius: 16px; background: rgba(11, 42, 74, .92); color: #fff; text-align: center; min-height: 96px; display: flex; flex-direction: column; gap: 8px; align-items: center; justify-content: center; }
+.pd-clip .pd-chip { color: #0b2a4a; font-size: .85em; }
+.pd-pasted { padding: 8px 12px; border-radius: 10px; background: #e2ffe9; border: 2px solid #2fbf71; animation: pop-in .4s cubic-bezier(.3, 1.6, .5, 1); }
+.pd-foot { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-top: 14px; font-weight: 700; }
+.pd-foot button { padding: 8px 18px; border-radius: 999px; border: 2px solid #0b2a4a; background: #fff; color: #0b2a4a; font-weight: 700; }
+
+/* Quiz: hiệu ứng đúng / sai */
+.quiz-choice.wrong-choice { animation: shake-x .4s; }
+.quiz-choice.correct-choice { animation: jelly-pop .5s; }
+
+@media (max-width: 760px) { .predator { grid-template-columns: 1fr; } }
+
+/* ===== Hover / nhấn chung cho mọi nút và thẻ trong slide ===== */
+.content-slide button:not(:disabled), .content-slide select { transition: transform .2s cubic-bezier(.3, 1.6, .5, 1), box-shadow .2s, background-color .2s; }
+.content-slide button:not(:disabled):hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 8px 18px rgba(47, 143, 232, .3); }
+.content-slide button:not(:disabled):active { transform: scale(.94, 1.04); box-shadow: none; }
+.type-card, .structure-card, .tool-info, .summary-tool, .team-card, .salary-card, .relation-table, .quiz-choice { transition: transform .25s cubic-bezier(.3, 1.6, .5, 1), box-shadow .25s; }
+.type-card:hover, .structure-card:hover, .tool-info:hover, .summary-tool:hover, .team-card:hover, .relation-table:hover { transform: translateY(-4px); box-shadow: 0 12px 26px rgba(47, 143, 232, .28); }
+
+/* Banner mở đầu mỗi ARC */
+.arc-banner {
+  position: fixed; inset: 0; z-index: 60; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  pointer-events: none; color: #fff; text-shadow: 0 4px 0 rgba(11, 42, 74, .55), 0 0 30px rgba(111, 208, 255, .8);
+  background: radial-gradient(circle, rgba(11, 42, 74, .55), transparent 65%); animation: arc-flash 1.7s ease-in-out forwards;
+}
+.arc-banner small { font-size: 22px; letter-spacing: .5em; }
+.arc-banner b { font-size: clamp(56px, 12vw, 140px); line-height: 1; }
+.arc-banner span { font-size: 22px; letter-spacing: .3em; opacity: .9; }
+@keyframes arc-flash {
+  0% { opacity: 0; transform: scale(.85); } 20% { opacity: 1; transform: scale(1); } 70% { opacity: 1; } 100% { opacity: 0; transform: scale(1.08); }
+}
+
+/* Slide 18: reset + thắng */
+.plural-reset { align-self: flex-end; padding: 6px 16px; border-radius: 999px; border: 2px solid #0b2a4a; background: #fff; color: #0b2a4a; font-weight: 700; }
+.win-burst { position: absolute; left: 0; right: 0; top: 38%; text-align: center; font-size: 46px; pointer-events: none; z-index: 8; animation: win-rise 1.8s ease-out forwards; }
+@keyframes win-rise { 0% { opacity: 0; transform: translateY(30px) scale(.6); } 25% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translateY(-50px) scale(1.15); } }

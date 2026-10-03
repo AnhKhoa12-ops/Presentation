@@ -29,7 +29,7 @@
 .keyboard-hint { display: flex; align-items: center; gap: 4px; }
 .keyboard-hint kbd, kbd { display: inline-grid; place-items: center; min-width: 19px; height: 20px; padding: 0 5px; border: 1px solid #dfe5ee; border-radius: 5px; background: #fff; color: #69758a; font: 10px/1 inherit; }
 .topbar-dot { width: 7px; height: 7px; border-radius: 50%; background: #35bf91; box-shadow: 0 0 0 4px #e6f8f2; }
-.slide-viewport { min-height: 0; overflow: auto; overscroll-behavior: contain; animation: slide-in .25s ease-out both; }
+.slide-viewport { min-height: 0; overflow: auto; overscroll-behavior: contain; }
 @keyframes slide-in { from { opacity: .6; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 .deck-controls { border-top: 1px solid #edf0f5; gap: 28px; }
 .slide-index { display: flex; flex: 0 0 255px; align-items: center; gap: 7px; color: #a0a9b8; font-size: 11px; }
@@ -234,7 +234,6 @@
   .quiz-choices { grid-template-columns: 1fr; }.quiz-choice { padding: 8px; }.quiz-question { margin: 14px 0; }.quiz-feedback { align-items: start; flex-wrap: wrap; }.quiz-feedback button { margin-left: 0; }.summary-tools { gap: 5px; }.summary-tool { flex-direction: column; align-items: start; padding: 7px; }.summary-tool small { font-size: 6px; }.quiz-bottom { font-size: 5px; }
   .slide-index { font-size: 9px; }.nav-button { width: 30px; height: 30px; }
 }
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; } }
 
 /* Toàn màn hình: ẩn dòng gợi ý phím cho gọn */
 .is-fullscreen .keyboard-hint {
@@ -268,16 +267,22 @@
   position: fixed;
   inset: 0;
   width: 100vw;
+  width: 100dvw;
   height: 100vh;
-  min-height: 100vh;
-  overflow: auto;
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .is-fullscreen .content-slide {
   display: grid;
   width: 100%;
   max-width: none;
+  height: 100vh;
+  height: 100dvh;
   min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
   grid-template-rows: auto minmax(0, 1fr) auto;
   align-content: stretch;
   gap: clamp(18px, 3.2vh, 36px);
@@ -305,13 +310,141 @@
 
 .is-fullscreen .cover-slide {
   width: 100%;
+  height: 100vh;
+  height: 100dvh;
   min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
 }
 
 @media (max-width: 760px) {
   .is-fullscreen .content-slide {
     min-height: 100vh;
+    min-height: 100dvh;
     gap: 20px;
     padding: 24px 20px;
   }
+}
+
+/* Scale the deck shell to the available viewport instead of enforcing a fixed minimum. */
+.presentation {
+  height: 100vh;
+  height: 100dvh;
+  min-height: 0;
+  grid-template-rows: clamp(48px, 7dvh, 66px) minmax(0, 1fr) clamp(50px, 7.4dvh, 68px);
+}
+
+.deck-topbar,
+.deck-controls {
+  padding-right: clamp(12px, 5.3vw, 84px);
+  padding-left: clamp(12px, 5.3vw, 84px);
+}
+
+.deck-controls {
+  gap: clamp(10px, 2vw, 28px);
+}
+
+.content-slide img,
+.content-slide video,
+.cover-slide img {
+  max-width: 100%;
+}
+
+@media (max-width: 760px) {
+  .presentation {
+    min-height: 0;
+    grid-template-rows: clamp(48px, 8dvh, 54px) minmax(0, 1fr) clamp(50px, 8dvh, 58px);
+  }
+
+  .deck-topbar,
+  .deck-controls {
+    min-width: 0;
+  }
+
+  .is-fullscreen .slide-viewport {
+    width: 100vw;
+    width: 100dvw;
+    height: 100vh;
+    height: 100dvh;
+  }
+}
+
+@media (max-height: 720px) {
+  .content-slide {
+    padding-top: clamp(16px, 3.2vh, 30px);
+    padding-bottom: clamp(16px, 3.2vh, 30px);
+  }
+
+  .slide-heading {
+    margin-bottom: clamp(14px, 2.6vh, 26px);
+  }
+
+  .bar-chart {
+    height: clamp(96px, 21vh, 154px);
+  }
+
+  .mini-page {
+    min-height: clamp(220px, 44vh, 330px);
+  }
+
+  .mini-page-content {
+    min-height: clamp(185px, 37vh, 278px);
+  }
+
+  .proof-paper,
+  .find-document {
+    min-height: clamp(210px, 38vh, 275px);
+  }
+
+  .is-fullscreen .content-slide {
+    gap: clamp(10px, 2.2vh, 22px);
+    padding-top: clamp(14px, 3vh, 36px);
+    padding-bottom: clamp(14px, 3vh, 36px);
+  }
+}
+
+@media (max-height: 520px) {
+  .presentation {
+    grid-template-rows: 44px minmax(0, 1fr) 48px;
+  }
+
+  .deck-brand,
+  .deck-section,
+  .keyboard-hint {
+    font-size: 8px;
+  }
+
+  .brand-mark,
+  .nav-button {
+    width: 28px;
+    height: 28px;
+  }
+
+  .content-slide {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  .slide-heading {
+    margin-bottom: 12px;
+  }
+
+  .is-fullscreen .content-slide {
+    min-height: 100vh;
+    min-height: 100dvh;
+    gap: 10px;
+    padding: 12px 18px;
+  }
+}
+
+/* Scale a 1280x720 slide canvas to each viewport without creating scrollbars. */
+.is-fullscreen :is(.content-slide, .cover-slide) {
+  --fullscreen-slide-scale: min(calc(100dvw / 1280px), calc(100dvh / 720px));
+  zoom: var(--fullscreen-slide-scale);
+  width: calc(100dvw / var(--fullscreen-slide-scale));
+  max-width: none;
+  height: calc(100dvh / var(--fullscreen-slide-scale));
+  min-height: calc(100dvh / var(--fullscreen-slide-scale));
+  margin: 0;
+  overflow: hidden;
 }

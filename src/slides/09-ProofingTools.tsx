@@ -1,8 +1,10 @@
+import { useRevealBlocks } from '../hooks/useSteps'
 import { useState } from 'react'
 import { DemoLabel, SlideHeading } from './shared'
 
 const tools = ['Spell checker', 'Thesaurus', 'Grammar checker']
 export default function ProofingTools() {
+  useRevealBlocks(['.proof-paper', '.proof-controls'])
   const [active, setActive] = useState<string[]>([])
   const toggle = (tool: string) => setActive((current) => current.includes(tool) ? current.filter((item) => item !== tool) : [...current, tool])
   return (
